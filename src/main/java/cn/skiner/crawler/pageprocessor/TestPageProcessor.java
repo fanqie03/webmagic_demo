@@ -15,10 +15,10 @@ public class TestPageProcessor implements PageProcessor {
 
     public void process(Page page) {
         page.putField("html",page.getHtml());
-        page.putField("works",page.getHtml().xpath("//div[@class='hover media cfix']").all());
+//        page.putField("works",page.getHtml().xpath("//div[@class='hover media cfix']").all());
 //        page.putField("");
 //        page.putField();
-        page.putField("personLink",page.getHtml().links().regex("http://www.diyibaomu.com/[a-z]*/information-id-[0-9]*.html").all());
+//        page.putField("personLink",page.getHtml().links().regex("http://www.diyibaomu.com/[a-z]*/information-id-[0-9]*.html").all());
 //        if(page)
         page.putField("url",page.getUrl());
     }
@@ -36,7 +36,8 @@ public class TestPageProcessor implements PageProcessor {
 //                .addUrl("http://www.diyibaomu.com/category-catid-265-page-4.html")
 //                .addUrl("http://www.diyibaomu.com/category-catid-265-page-5.html")
 //                .addUrl("http://www.diyibaomu.com/category-catid-265-page-6.html")
-                .addUrl("http://www.diyibaomu.com/shanghai/information-id-2378.html")
+//                .addUrl("http://www.diyibaomu.com/shanghai/information-id-2378.html")
+                .addUrl("http://www.51baomu.cn/baomu-521107.html")
                 .thread(1)
                 .run();
     }

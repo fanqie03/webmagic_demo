@@ -57,10 +57,10 @@ public class DiYiBaoMuPageProcessor implements PageProcessor, Crawler {
 
     public static void main(String[] args){
         DiYiBaoMuPageProcessor pageProcessor = new DiYiBaoMuPageProcessor();
-        pageProcessor.crawl();
+        pageProcessor.craw();
     }
 
-    public void crawl(){
+    public void craw(){
         Spider.create(new DiYiBaoMuPageProcessor())
                 .addUrl("http://www.diyibaomu.com/category-catid-265.html")
                 .addUrl("http://www.diyibaomu.com/category-catid-265-page-2.html")
