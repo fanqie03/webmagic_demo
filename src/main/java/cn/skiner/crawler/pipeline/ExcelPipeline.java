@@ -11,6 +11,7 @@ import us.codecraft.webmagic.pipeline.Pipeline;
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -30,7 +31,9 @@ public class ExcelPipeline implements Pipeline {
         this.FILE = file;
     }
 
-    private static AtomicInteger num = new AtomicInteger();
+    private static AtomicInteger NUM = new AtomicInteger();
+
+    private static AtomicBoolean FIRST = new AtomicBoolean(true);
 
     static{
         WB = new HSSFWorkbook();
@@ -43,7 +46,21 @@ public class ExcelPipeline implements Pipeline {
     public void process(ResultItems resultItems, Task task) {
         Map<String,Object> map = resultItems.getAll();
 
-        HSSFRow row = SHEET.createRow(num.getAndIncrement());
+        if(FIRST.get()){
+            synchronized (this){
+                if(FIRST.get()){
+                    FIRST.set(false);
+                    HSSFRow row = SHEET.createRow(NUM.getAndIncrement());
+                    AtomicInteger i = new AtomicInteger();
+                    map.forEach((k,v)->{
+                        HSSFCell cell = row.createCell(i.getAndIncrement());
+                        cell.setCellValue(k.toString());
+                    });
+                }
+            }
+        }
+
+        HSSFRow row = SHEET.createRow(NUM.getAndIncrement());
 
         AtomicInteger i = new AtomicInteger();
 
@@ -51,6 +68,15 @@ public class ExcelPipeline implements Pipeline {
             HSSFCell cell = row.createCell(i.getAndIncrement());
             cell.setCellValue(v.toString());
         });
+
+//        if(i.get()%50==0){
+//            synchronized (this){
+//                if(i.get()%50==0){
+//                    flush();
+//                }
+//            }
+//        }
+
     }
 
     public static void flush(){
